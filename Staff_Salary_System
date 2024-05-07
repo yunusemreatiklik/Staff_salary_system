@@ -1,299 +1,306 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
 
-long int TCKimlik[50];
-char Ad[50][50],Soyad[50][50],MedeniHal,EsCalismaDur,EngelDurum,PerEkle,YedekAdDizi[50],YedekSoyadDizi[50];
-float AylikBrutUcret[50],AylikTopBrutUcret[50],AylikGunTopBrutUcret[50],VergidenSonraBrut[50],ToplamGenel,ToplamVergiKes,IlkParaToplam,EnYuksekBrutuOlan,EnYukAylikUcret;
-int EsYardimi,CocukYardim,CocukSay,YasBuyuk,EngelOran,EngelIndirimi=0,EngelDerece=0;
-int PersonelSay=-1,IkiBinAltinda=0;
-int k1[100],k50[100],k25[100],k10[100],k5[100],k01[100];
-int b200[100],b100[100],b50[100],b20[100],b10[100],b5[100];
-int DonusumTam[50],KurusDonusum[50];
-int Top200,Top100,Top50,Top20,Top10,Top5,Top1,Topk50,Topk25,Topk10,Topk5,Topk1;
-int YirmiYediVergi=0,OtuzBesVergi=0,YirmiVergi=0,OnBesVergi=0;
-float YirmiYediVergiYuzde,OtuzBesVergiYuzde,YirmiVergiYuzde,OnBesVergiYuzde;
-int i,k,j,EvliSay=0,BekarSay=0,EsCalisiyor=0,CocuguOlan=0,TopCocSay=0,UctenFazlaCoc=0,EngCalSay=0;
+long int IDNumber[50];
+char FirstName[50][50], LastName[50][50], MaritalStatus, SpouseWorkingStatus, DisabilityStatus, AddMorePersonnel, TempFirstName[50], TempLastName[50];
+float MonthlyGrossSalary[50], MonthlyTotalGrossSalary[50], DailyTotalGrossSalary[50], PostTaxGross[50], TotalGeneral, TotalTaxDeduction, InitialMoneyTotal, HighestGross, HighestMonthlySalary;
+int SpouseAllowance, ChildAllowance, ChildCount, OlderChildren, HighDisability, DisabilityAllowance=0, DisabilityDegree=0;
+int EmployeeCount=-1, BelowTwoThousand=0;
+int c200[100], c100[100], c50[100], c20[100], c10[100], c5[100], c1[100];
+int b200[100], b100[100], b50[100], b20[100], b10[100], b5[100];
+int ConversionWhole[50], CentsConversion[50];
+int Total200, Total100, Total50, Total20, Total10, Total5, Total1, Totalk50, Totalk25, Totalk10, Totalk5, Totalk1;
+int Tax27=0, Tax35=0, Tax20=0, Tax15=0;
+float Tax27Percent, Tax35Percent, Tax20Percent, Tax15Percent;
+int i,k,j, MarriedCount=0, SingleCount=0, WorkingSpouse=0, HasChild=0, TotalChildCount=0, MoreThanThreeChildren=0, DisabledEmployeesCount=0;
+
 int main()
 {
     setlocale(LC_ALL,"Turkish");
-    PersonelBilgi();
+    PersonnelInfo();
 }
-void PersonelBilgi()
+
+void PersonnelInfo()
 {
-    PersonelSay++;
-    printf("TC Kimlik Numaranýz:");
-    scanf("%ld",&TCKimlik[PersonelSay]);
-    printf("Adýnýz Soyadýnýz:");
-    scanf("%s %s",&YedekAdDizi,&YedekSoyadDizi);
-    for(i=0;i<strlen(YedekAdDizi);i++)
-        {
-            Ad[PersonelSay][i]=YedekAdDizi[i];
-            Soyad[PersonelSay][i]=YedekSoyadDizi[i];
-        }
-    printf("Aylýk Brüt Ücretinizi Giriniz:");
-    scanf("%f",&AylikBrutUcret[PersonelSay]);
-    EsDurum();
-}
-void EsDurum()
-{
-    printf("Medeni Durumunuz:(e/E/b/B) ");
-    scanf("%s",&MedeniHal);
-    if (MedeniHal=='e'|| MedeniHal=='E')
+    EmployeeCount++;
+    printf("Your ID Number:");
+    scanf("%ld",&IDNumber[EmployeeCount]);
+    printf("Your First Name and Last Name:");
+    scanf("%s %s", &TempFirstName, &TempLastName);
+    for(i=0;i<strlen(TempFirstName);i++)
     {
-        printf("Eþiniz Çalýþýyor Mu: (e/E/h/H) ");
-        scanf("%s",&EsCalismaDur);
-        if (EsCalismaDur == 'e'||EsCalismaDur=='E')
+        FirstName[EmployeeCount][i]=TempFirstName[i];
+        LastName[EmployeeCount][i]=TempLastName[i];
+    }
+    printf("Enter Your Monthly Gross Salary:");
+    scanf("%f",&MonthlyGrossSalary[EmployeeCount]);
+    SpouseStatus();
+}
+
+void SpouseStatus()
+{
+    printf("Marital Status: (m/M/s/S) ");
+    scanf("%s", &MaritalStatus);
+    if (MaritalStatus == 'm' || MaritalStatus == 'M')
+    {
+        printf("Is Your Spouse Working: (y/Y/n/N) ");
+        scanf("%s", &SpouseWorkingStatus);
+        if (SpouseWorkingStatus == 'y' || SpouseWorkingStatus == 'Y')
         {
-            EvliSay++;
-            EsCalisiyor++;
-            CocukBilgileri();
+            MarriedCount++;
+            WorkingSpouse++;
+            ChildInfo();
         }
-        else if (EsCalismaDur == 'h'||EsCalismaDur=='H')
+        else if (SpouseWorkingStatus == 'n' || SpouseWorkingStatus == 'N')
         {
-            EvliSay++;
-            EsYardimi=220;
-            CocukBilgileri();
+            MarriedCount++;
+            SpouseAllowance = 220;
+            ChildInfo();
         }
         else
         {
-            printf("Lütfen Ýstenen Deðerleri Giriniz\a\a");
-            EsDurum();
+            printf("Please Enter the Requested Values\a\a");
+            SpouseStatus();
         }
     }
-    else if (MedeniHal=='B'|| MedeniHal=='b')
+    else if (MaritalStatus == 's' || MaritalStatus == 'S')
     {
-        BekarSay++;
-        VergiHesabi();
+        SingleCount++;
+        TaxCalculation();
     }
     else
     {
-        printf("Lütfen Ýstenen Deðerleri Giriniz\a\a");
-        EsDurum();
+        printf("Please Enter the Requested Values\a\a");
+        SpouseStatus();
     }
 }
-void CocukBilgileri()
+
+void ChildInfo()
 {
-    printf("Bakmakla yükümlü olduðu çocuk sayýsý: ");
-    scanf("%d",&CocukSay);
-    if (CocukSay>0)
+    printf("Number of dependents children: ");
+    scanf("%d", &ChildCount);
+    if (ChildCount > 0)
     {
-        printf("6 Yaþýndan Büyük Çocuk Sayýsý: ");
-        scanf("%d",&YasBuyuk);
-        if (CocukSay>=YasBuyuk)
+        printf("Number of Children Older Than 6: ");
+        scanf("%d", &OlderChildren);
+        if (ChildCount >= OlderChildren)
         {
-            CocuguOlan++;
-            TopCocSay+=CocukSay;
-            CocukYardim=(YasBuyuk*45)+(CocukSay-YasBuyuk)*25;
-            if (CocukSay>3)
+            HasChild++;
+            TotalChildCount += ChildCount;
+            ChildAllowance = (OlderChildren * 45) + (ChildCount - OlderChildren) * 25;
+            if (ChildCount > 3)
             {
-                UctenFazlaCoc++;
+                MoreThanThreeChildren++;
             }
-            VergiHesabi();
+            TaxCalculation();
         }
         else
         {
-            printf("O kadar çocuðunuz yok \a\a");
-            CocukBilgileri();
+            printf("You do not have that many children\a\a");
+            ChildInfo();
         }
     }
-    else if (CocukSay==0)
+    else if (ChildCount == 0)
     {
-        VergiHesabi();
+        TaxCalculation();
     }
     else
     {
-        printf("Çocuk Sayýsý Negatif Olamaz\a\a");
-        CocukBilgileri();
+        printf("Number of Children Cannot Be Negative\a\a");
+        ChildInfo();
     }
 }
-void VergiHesabi()
+
+void TaxCalculation()
 {
-    AylikTopBrutUcret[PersonelSay]=AylikBrutUcret[PersonelSay]+EsYardimi+CocukYardim;
-    AylikGunTopBrutUcret[PersonelSay]=AylikTopBrutUcret[PersonelSay];
-    if (AylikTopBrutUcret[PersonelSay] < 2000)
+    MonthlyTotalGrossSalary[EmployeeCount] = MonthlyGrossSalary[EmployeeCount] + SpouseAllowance + ChildAllowance;
+    DailyTotalGrossSalary[EmployeeCount] = MonthlyTotalGrossSalary[EmployeeCount];
+    if (MonthlyTotalGrossSalary[EmployeeCount] < 2000)
     {
-        AylikTopBrutUcret[PersonelSay] -= AylikTopBrutUcret[PersonelSay] * 15/100;
-        OnBesVergi++;
-        EngelBilgileri();
+        MonthlyTotalGrossSalary[EmployeeCount] -= MonthlyTotalGrossSalary[EmployeeCount] * 15 / 100;
+        Tax15++;
+        DisabilityInfo();
     }
-    else if (AylikTopBrutUcret[PersonelSay] >= 2000 && AylikTopBrutUcret[PersonelSay] < 5000)
+    else if (MonthlyTotalGrossSalary[EmployeeCount] >= 2000 && MonthlyTotalGrossSalary[EmployeeCount] < 5000)
     {
-        AylikTopBrutUcret[PersonelSay] -= AylikTopBrutUcret[PersonelSay] * 20/100;
-        YirmiVergi++;
-        EngelBilgileri();
+        MonthlyTotalGrossSalary[EmployeeCount] -= MonthlyTotalGrossSalary[EmployeeCount] * 20 / 100;
+        Tax20++;
+        DisabilityInfo();
     }
-    else if (AylikTopBrutUcret[PersonelSay] >= 5000 && AylikTopBrutUcret[PersonelSay] < 10000)
+    else if (MonthlyTotalGrossSalary[EmployeeCount] >= 5000 && MonthlyTotalGrossSalary[EmployeeCount] < 10000)
     {
-        AylikTopBrutUcret[PersonelSay] -= AylikTopBrutUcret[PersonelSay] * 27/100;
-        YirmiYediVergi++;
-        EngelBilgileri();
+        MonthlyTotalGrossSalary[EmployeeCount] -= MonthlyTotalGrossSalary[EmployeeCount] * 27 / 100;
+        Tax27++;
+        DisabilityInfo();
     }
-    else if (AylikTopBrutUcret[PersonelSay] >= 10000)
+    else if (MonthlyTotalGrossSalary[EmployeeCount] >= 10000)
     {
-        AylikTopBrutUcret[PersonelSay] -= AylikTopBrutUcret[PersonelSay] * 35/100;
-        OtuzBesVergi++;
-        EngelBilgileri();
+        MonthlyTotalGrossSalary[EmployeeCount] -= MonthlyTotalGrossSalary[EmployeeCount] * 35 / 100;
+        Tax35++;
+        DisabilityInfo();
     }
 }
-void EngelBilgileri()
+
+void DisabilityInfo()
 {
-    VergidenSonraBrut[PersonelSay]=AylikTopBrutUcret[PersonelSay];
-    printf("Her Hangi Bir Engeliniz Var mý:(e/E/h/H) ");
-    scanf("%s",&EngelDurum);
-    if (EngelDurum=='e'|| EngelDurum=='E')
+    PostTaxGross[EmployeeCount] = MonthlyTotalGrossSalary[EmployeeCount];
+    printf("Do You Have Any Disability: (y/Y/n/N) ");
+    scanf("%s", &DisabilityStatus);
+    if (DisabilityStatus == 'y' || DisabilityStatus == 'Y')
     {
-        EngCalSay++;
-        printf("Engel Oranýný Giriniz: ");
-        scanf("%d",&EngelOran);
-        if (EngelOran>=80)
+        DisabledEmployeesCount++;
+        printf("Enter Your Disability Percentage: ");
+        scanf("%d", &HighDisability);
+        if (HighDisability >= 80)
         {
-            VergidenSonraBrut[PersonelSay]+=900;
-            EngelDerece=1;
-            Donusum();
+            PostTaxGross[EmployeeCount] += 900;
+            DisabilityDegree = 1;
+            Conversion();
         }
-        else if (EngelOran>=60&&EngelOran<80)
+        else if (HighDisability >= 60 && HighDisability < 80)
         {
-            VergidenSonraBrut[PersonelSay]+=470;
-            EngelDerece=2;
-            Donusum();
+            PostTaxGross[EmployeeCount] += 470;
+            DisabilityDegree = 2;
+            Conversion();
         }
-        else if (EngelOran>=40&&EngelOran<60)
+        else if (HighDisability >= 40 && HighDisability < 60)
         {
-            VergidenSonraBrut[PersonelSay]+=210;
-            EngelDerece=3;
-            Donusum();
+            PostTaxGross[EmployeeCount] += 210;
+            DisabilityDegree = 3;
+            Conversion();
         }
-        else if (EngelOran==0&&EngelOran<40)
+        else if (HighDisability == 0 && HighDisability < 40)
         {
-            Donusum();
+            Conversion();
         }
 
     }
-    else if (EngelDurum=='h'|| EngelDurum=='H')
+    else if (DisabilityStatus == 'n' || DisabilityStatus == 'N')
         {
-            Donusum();
+            Conversion();
         }
 
 }
-void Donusum()
+
+void Conversion()
 {
-    DonusumTam[PersonelSay] = (int)VergidenSonraBrut[PersonelSay];
-    b200[PersonelSay] = (DonusumTam[PersonelSay] /200);
-    b100[PersonelSay] = (DonusumTam[PersonelSay] %200)/100;
-    b50[PersonelSay]  = (DonusumTam[PersonelSay] %100)/50;
-    b20[PersonelSay]  = (DonusumTam[PersonelSay] % 50)/20;
-    b10[PersonelSay]  = (DonusumTam[PersonelSay] % 15)/10;
-    b5[PersonelSay]   = (DonusumTam[PersonelSay] % 10)/5;
-    k1[PersonelSay]   = (DonusumTam[PersonelSay] %  5)/1;
+    ConversionWhole[EmployeeCount] = (int)PostTaxGross[EmployeeCount];
+    b200[EmployeeCount] = (ConversionWhole[EmployeeCount] / 200);
+    b100[EmployeeCount] = (ConversionWhole[EmployeeCount] % 200) / 100;
+    b50[EmployeeCount] = (ConversionWhole[EmployeeCount] % 100) / 50;
+    b20[EmployeeCount] = (ConversionWhole[EmployeeCount] % 50) / 20;
+    b10[EmployeeCount] = (ConversionWhole[EmployeeCount] % 15) / 10;
+    b5[EmployeeCount] = (ConversionWhole[EmployeeCount] % 10) / 5;
+    c1[EmployeeCount] = (ConversionWhole[EmployeeCount] % 5) / 1;
 
-    KurusDonusum[PersonelSay] = (VergidenSonraBrut[PersonelSay] - DonusumTam[PersonelSay])*100; /*Virgülden sonraki kýsmý bulmak için yaptýk */
-    k50[PersonelSay] = (KurusDonusum[PersonelSay] /50);
-    k25[PersonelSay] = (KurusDonusum[PersonelSay] %50)/25;
-    k10[PersonelSay] = (KurusDonusum[PersonelSay] %25)/10;
-    k5[PersonelSay]  = (KurusDonusum[PersonelSay] %10)/5;
-    k01[PersonelSay] = (KurusDonusum[PersonelSay] % 5)/1;
+    CentsConversion[EmployeeCount] = (PostTaxGross[EmployeeCount] - ConversionWhole[EmployeeCount]) * 100; /*To find the fraction part */
+    c50[EmployeeCount] = (CentsConversion[EmployeeCount] / 50);
+    c25[EmployeeCount] = (CentsConversion[EmployeeCount] % 50) / 25;
+    c10[EmployeeCount] = (CentsConversion[EmployeeCount] % 25) / 10;
+    c5[EmployeeCount] = (CentsConversion[EmployeeCount] % 10) / 5;
+    c1[EmployeeCount] = (CentsConversion[EmployeeCount] % 5) / 1;
 
 
 
-    printf("\n\nTC Kimlik Numarasý ve Adý Soyadý:%ld  %s %s",TCKimlik[PersonelSay],Ad[PersonelSay],Soyad[PersonelSay]);
-    printf("\nAylýk Brüt Ücreti:%.2f",AylikBrutUcret[PersonelSay]);
-    printf("\nEþ Ýçin Aile Yardým Ödeneði:%d",EsYardimi);
-    printf("\nÇocuk Ýçin Aile Yardýmý Ödeneði:%d",CocukYardim);
-    printf("\nAylýk Toplam Brüt Ücreti:%.2f",AylikBrutUcret[PersonelSay]+EsYardimi+CocukYardim);
-    printf("\nGelir Vergisi Kesintisi:%.2f",AylikGunTopBrutUcret[PersonelSay]-AylikTopBrutUcret[PersonelSay]);
-    printf("\nEngel Derecesi:%d",EngelDerece);
-    printf("\nAylýk net ücreti:%.2f",VergidenSonraBrut[PersonelSay]);
+    printf("\n\nID Number and Name: %ld  %s %s", IDNumber[EmployeeCount], FirstName[EmployeeCount], LastName[EmployeeCount]);
+    printf("\nMonthly Gross Salary: %.2f", MonthlyGrossSalary[EmployeeCount]);
+    printf("\nSpouse Allowance: %d", SpouseAllowance);
+    printf("\nChild Allowance: %d", ChildAllowance);
+    printf("\nTotal Monthly Gross Salary: %.2f", MonthlyGrossSalary[EmployeeCount] + SpouseAllowance + ChildAllowance);
+    printf("\nIncome Tax Deduction: %.2f", DailyTotalGrossSalary[EmployeeCount] - MonthlyTotalGrossSalary[EmployeeCount]);
+    printf("\nDisability Degree: %d", DisabilityDegree);
+    printf("\nMonthly Net Salary: %.2f", PostTaxGross[EmployeeCount]);
     printf("\n\n\n200\t 100\t 50\t 20\t 10\t 5\t 1\t0.5\t0.25\t0.1\t0.05\t0.01");
     printf("\n---\t ---\t ---\t---\t---\t---\t---\t---\t---\t---\t---\t---\t ");
-    printf("\n%d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d ",b200[PersonelSay],b100[PersonelSay],b50[PersonelSay],b20[PersonelSay],b10[PersonelSay],b5[PersonelSay],k1[PersonelSay],k50[PersonelSay],k25[PersonelSay],k10[PersonelSay],k5[PersonelSay],k01[PersonelSay]);
-    printf("\n\nBaþka Personel Eklemek Ýster Misiniz:(e/E/h/H) ");
-    scanf("%s",&PerEkle);
-    if (PerEkle=='e'|| PerEkle=='E')
+    printf("\n%d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d ",b200[EmployeeCount],b100[EmployeeCount],b50[EmployeeCount],b20[EmployeeCount],b10[EmployeeCount],b5[EmployeeCount],c1[EmployeeCount],c50[EmployeeCount],c25[EmployeeCount],c10[EmployeeCount],c5[EmployeeCount],c1[EmployeeCount]);
+    printf("\n\nAdd Another Personnel? (y/Y/n/N) ");
+    scanf("%s", &AddMorePersonnel);
+    if (AddMorePersonnel == 'y' || AddMorePersonnel == 'Y')
     {
-        PersonelBilgi();
+        PersonnelInfo();
     }
-    else if (PerEkle=='h'|| PerEkle=='H')
+    else if (AddMorePersonnel == 'n' || AddMorePersonnel == 'N')
     {
-        GenelTablo();
+        GeneralTable();
     }
 }
-void GenelTablo()
+
+void GeneralTable()
 {
-    for (i=0;i<=PersonelSay;i++)
+    for (i=0; i<=EmployeeCount; i++)
     {
-        ToplamGenel+=VergidenSonraBrut[i];
-        Top200+=b200[PersonelSay];
-        Top100+=b100[PersonelSay];
-        Top50+=b50[PersonelSay];
-        Top20+=b20[PersonelSay];
-        Top10+=b10[PersonelSay];
-        Top5+=b5[PersonelSay];
-        Top1+=k1[PersonelSay];
-        Topk50+=k50[PersonelSay];
-        Topk25+=k25[PersonelSay];
-        Topk10+=k10[PersonelSay];
-        Topk5+=k5[PersonelSay];
-        Topk1+=k01[PersonelSay];
+        TotalGeneral += PostTaxGross[i];
+        Total200 += b200[EmployeeCount];
+        Total100 += b100[EmployeeCount];
+        Total50 += b50[EmployeeCount];
+        Total20 += b20[EmployeeCount];
+        Total10 += b10[EmployeeCount];
+        Total5 += b5[EmployeeCount];
+        Total1 += c1[EmployeeCount];
+        Totalk50 += c50[EmployeeCount];
+        Totalk25 += c25[EmployeeCount];
+        Totalk10 += c10[EmployeeCount];
+        Totalk5 += c5[EmployeeCount];
+        Totalk1 += c1[EmployeeCount];
     }
-    for (i=0;i<PersonelSay;i++)
+    for (i=0; i<EmployeeCount; i++)
     {
-        ToplamVergiKes+=AylikGunTopBrutUcret[PersonelSay]-AylikTopBrutUcret[PersonelSay];
-        if (VergidenSonraBrut[i]<2000)
+        TotalTaxDeduction += DailyTotalGrossSalary[EmployeeCount] - MonthlyTotalGrossSalary[EmployeeCount];
+        if (PostTaxGross[i] < 2000)
         {
-            IkiBinAltinda++;
+            BelowTwoThousand++;
         }
     }
-    for (i=0;i<PersonelSay;i++)
+    for (i=0; i<EmployeeCount; i++)
     {
-        IlkParaToplam+=AylikBrutUcret[PersonelSay];
+        InitialMoneyTotal += MonthlyGrossSalary[EmployeeCount];
     }
 
-    if (OnBesVergi==0)
-        OnBesVergiYuzde==0;
+    if (Tax15==0)
+        Tax15Percent=0;
     else
-        OnBesVergiYuzde=OnBesVergi/(PersonelSay+1);
-    if(YirmiVergi==0)
-        YirmiVergiYuzde==0;
+        Tax15Percent=Tax15/(EmployeeCount+1);
+    if(Tax20==0)
+        Tax20Percent=0;
     else
-        YirmiVergiYuzde=YirmiVergi/(PersonelSay+1);
-    if(YirmiYediVergi==0)
-        YirmiYediVergiYuzde==0;
+        Tax20Percent=Tax20/(EmployeeCount+1);
+    if(Tax27==0)
+        Tax27Percent=0;
     else
-        YirmiYediVergiYuzde=YirmiYediVergi/(PersonelSay+1);
-    if (OtuzBesVergi==0)
-        OtuzBesVergiYuzde==0;
+        Tax27Percent=Tax27/(EmployeeCount+1);
+    if (Tax35==0)
+        Tax35Percent=0;
     else
-        OtuzBesVergiYuzde=OtuzBesVergi/(PersonelSay+1);
+        Tax35Percent=Tax35/(EmployeeCount+1);
 
-    EnYuksekBrutuOlan=AylikGunTopBrutUcret[0];
-    for (i=0;i<PersonelSay+1;i++)
+    HighestGross = DailyTotalGrossSalary[0];
+    for (i=0; i<EmployeeCount+1; i++)
     {
-        if (EnYuksekBrutuOlan<AylikGunTopBrutUcret[i])
+        if (HighestGross < DailyTotalGrossSalary[i])
         {
-            EnYuksekBrutuOlan=AylikGunTopBrutUcret[i];
+            HighestGross = DailyTotalGrossSalary[i];
         }
     }
-    for (i=0;i<PersonelSay+1;i++)
+    for (i=0; i<EmployeeCount+1; i++)
     {
-        if (AylikGunTopBrutUcret[i]==EnYuksekBrutuOlan)
+        if (DailyTotalGrossSalary[i] == HighestGross)
         {
             k=i;
             break;
         }
     }
-    EnYukAylikUcret=VergidenSonraBrut[0];
-    for (i=0;i<PersonelSay+1;i++)
+    HighestMonthlySalary = PostTaxGross[0];
+    for (i=0; i<EmployeeCount+1; i++)
     {
-        if (EnYukAylikUcret<VergidenSonraBrut[i])
+        if (HighestMonthlySalary < PostTaxGross[i])
         {
-            EnYukAylikUcret=VergidenSonraBrut[i];
+            HighestMonthlySalary = PostTaxGross[i];
         }
     }
-    for (i=0;i<PersonelSay+1;i++)
+    for (i=0; i<EmployeeCount+1; i++)
     {
-        if (VergidenSonraBrut[i]==EnYukAylikUcret)
+        if (PostTaxGross[i] == HighestMonthlySalary)
         {
             j=i;
             break;
@@ -302,47 +309,48 @@ void GenelTablo()
 
 
 
-    printf("\nTüm Personellere Ödenen Aylýk Toplam Net Ücret Tutarý: %.2f",ToplamGenel);
-    printf("\nDevlete Aktarýlan Vergi Miktarý: %.2f",ToplamVergiKes);
-    printf("\nTüm Çalýþanlarýn Aylýk Toplam Brüt Ücretlerinin Ortalamasý: %.2f",IlkParaToplam/(PersonelSay+1));
-    printf("\nTüm Çalýþanlarýn Aylýk Toplam Net Ücretlerinin Ortalamasý: %.2f",ToplamGenel/(PersonelSay+1));
-    printf("\nTedavülde Bulunmasý Gereken Para Miktarlarý;");
+    printf("\nTotal Monthly Net Salary Paid to All Personnel: %.2f", TotalGeneral);
+    printf("\nTax Amount Transferred to the State: %.2f", TotalTaxDeduction);
+    printf("\nAverage of All Employees' Total Monthly Gross Salaries: %.2f", InitialMoneyTotal/(EmployeeCount+1));
+    printf("\nAverage of All Employees' Total Monthly Net Salaries: %.2f", TotalGeneral/(EmployeeCount+1));
+    printf("\nAmounts of Money Needed in Circulation;");
     printf("\n\n200\t 100\t 50\t 20\t 10\t 5\t 1\t0.5\t0.25\t0.1\t0.05\t0.01");
     printf("\n---\t ---\t ---\t---\t---\t---\t---\t---\t---\t---\t---\t---\t ");
-    printf("\n%d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d ",Top200,Top100,Top50,Top20,Top10,Top5,Top1,Topk50,Topk25,Topk10,Topk5,Topk1);
-    printf("\n2000 TLnin Altýnda Aylýk Net Ucret Alan Çalýþanlarýn Sayýsý:%d",IkiBinAltinda+1);
-    printf("\nGelir Vergi Oraný 15 Olan Kiþi Sayýsý Ve Yüzdesi: %d  %.2f",OnBesVergi,OnBesVergiYuzde);
-    printf("\nGelir Vergi Oraný 20 Olan Kiþi Sayýsý Ve Yüzdesi: %d  %.2f",YirmiVergi,YirmiVergiYuzde);
-    printf("\nGelir Vergi Oraný 27 Olan Kiþi Sayýsý Ve Yüzdesi: %d  %.2f",YirmiYediVergi,YirmiYediVergiYuzde);
-    printf("\nGelir Vergi Oraný 35 Olan Kiþi Sayýsý Ve Yüzdesi: %d  %.2f",OtuzBesVergi,OtuzBesVergiYuzde);
-    printf("\n\nEn Yüksek Maaþlý Kiþinin;");
-    printf("\nTC Kimlik Numarasý: %ld",TCKimlik[k]);
-    for (i=0;i<50;i++)
+    printf("\n%d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d ", Total200, Total100, Total50, Total20, Total10, Total5, Total1, Totalk50, Totalk25, Totalk10, Totalk5, Totalk1);
+    printf("\nNumber of Employees Earning Below 2000 TL Net Salary Per Month: %d", BelowTwoThousand + 1);
+    printf("\nNumber of Persons and Percentage with 15 Tax Rate: %d  %.2f", Tax15, Tax15Percent);
+    printf("\nNumber of Persons and Percentage with 20 Tax Rate: %d  %.2f", Tax20, Tax20Percent);
+    printf("\nNumber of Persons and Percentage with 27 Tax Rate: %d  %.2f", Tax27, Tax27Percent);
+    printf("\nNumber of Persons and Percentage with 35 Tax Rate: %d  %.2f", Tax35, Tax35Percent);
+    printf("\n\nHighest Paid Employee;");
+    printf("\nID Number: %ld", IDNumber[k]);
+    for (i=0; i<50; i++)
     {
-        YedekAdDizi[i]=Ad[k][i];
-        YedekSoyadDizi[i]=Soyad[k][i];
+        TempFirstName[i]=FirstName[k][i];
+        TempLastName[i]=LastName[k][i];
     }
-    printf("\nAdý Soyadý: %s %s",YedekAdDizi,YedekSoyadDizi);
+    printf("\nName: %s %s", TempFirstName, TempLastName);
 
-    printf("\nAylýk Toplam Brüt Ücreti:%.2f",AylikGunTopBrutUcret[k]);
-    printf("\nGelir Vergisi Kesintisi:%.2f",AylikGunTopBrutUcret[k]-AylikTopBrutUcret[k]);
-    printf("\nAylýk Net Ücreti:%.2f",VergidenSonraBrut[k]);
+    printf("\nTotal Monthly Gross Salary: %.2f", DailyTotalGrossSalary[k]);
+    printf("\nIncome Tax Deduction: %.2f", DailyTotalGrossSalary[k]-MonthlyTotalGrossSalary[k]);
+    printf("\nMonthly Net Salary: %.2f", PostTaxGross[k]);
 
 
-    printf("\n\nAylýk Net Ücreti En Yüksek Olan Çalýþaný;");
-    printf("\nTC Kimlik Numarasý: %ld",TCKimlik[j]);
-        for (i=0;i<50;i++)
+    printf("\n\nEmployee with the Highest Net Monthly Salary;");
+    printf("\nID Number: %ld", IDNumber[j]);
+        for (i=0; i<50; i++)
     {
-        YedekAdDizi[i]=Ad[j][i];
-        YedekSoyadDizi[i]=Soyad[j][i];
+        TempFirstName[i]=FirstName[j][i];
+        TempLastName[i]=LastName[j][i];
     }
-    printf("\nAdý Soyadý: %s %s",YedekAdDizi,YedekSoyadDizi);
-    printf("\nAylýk Toplam Brüt Ücreti:%.2f",AylikGunTopBrutUcret[j]);
-    printf("\nGelir Vergisi Kesintisi:%.2f",AylikGunTopBrutUcret[j]-AylikTopBrutUcret[j]);
-    printf("\nAylýk Net Ücreti:%.2f",VergidenSonraBrut[j]);
-    printf("\nTüm Çalýþanlar Ýçindeki Evli Oraný: %.2f",(float)EvliSay/(float)(PersonelSay+1));
-    printf("\nTüm Çalýþanlar Ýçindeki Bekar Oraný: %.2f",(float)BekarSay/(float)(PersonelSay+1));
-    printf("\nEvli Olan Çalýþanlarýn Ýçinde, Eþleri De Çalýþanlarýn Yüzdesi: %f",(float)EsCalisiyor/(float)EvliSay);
-    printf("\nSadece Bakmakla Yükümlü Çocuðu Olanlar Dikkate Alýnarak, Çalýþanlarýn Bakmakla Yükümlü Olduklarý Çocuk Sayýsýnýn Ortalamasý: %f",(float)TopCocSay/(float)CocuguOlan);
-    printf("\nBakmakla Yükümlü Olduðu Çocuk Sayýsý 3ten Fazla Olan Çalýþanlarýn Sayýsý: %d",UctenFazlaCoc);
-    printf("\nEngelli Çalýþanlarýn Sayýsý Ve Tüm Çalýþanlar Ýçindeki Yüzdesi: %.2f",(float)EngCalSay/(float)(PersonelSay+1));
+    printf("\nName: %s %s", TempFirstName, TempLastName);
+    printf("\nTotal Monthly Gross Salary: %.2f", DailyTotalGrossSalary[j]);
+    printf("\nIncome Tax Deduction: %.2f", DailyTotalGrossSalary[j]-MonthlyTotalGrossSalary[j]);
+    printf("\nMonthly Net Salary: %.2f", PostTaxGross[j]);
+    printf("\nPercentage of Married Employees Among All Employees: %.2f", (float)MarriedCount/(float)(EmployeeCount+1));
+    printf("\nPercentage of Single Employees Among All Employees: %.2f", (float)SingleCount/(float)(EmployeeCount+1));
+    printf("\nPercentage of Married Employees Whose Spouses are Also Working: %f", (float)WorkingSpouse/(float)MarriedCount);
+    printf("\nConsidering Only Those With Dependent Children, the Average Number of Dependent Children Per Employee: %f", (float)TotalChildCount/(float)HasChild);
+    printf("\nNumber of Employees with More Than Three Dependents: %d", MoreThanThreeChildren);
+    printf("\nNumber of Disabled Employees and Their Percentage Among All Employees: %.2f", (float)DisabledEmployeesCount/(float)(EmployeeCount+1));
+}
